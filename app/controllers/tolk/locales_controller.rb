@@ -11,6 +11,7 @@ module Tolk
       respond_to do |format|
         format.html do
           @phrases = @locale.phrases_without_translation(params[:page])
+          redirect_to url_for(params.merge(:page => nil)) if @phrases.size < 1 unless params[:page].to_i == 0
         end
         format.atom { @phrases = @locale.phrases_without_translation(params[:page], :per_page => 50) }
         format.yml { render :text => @locale.to_hash.ya2yaml(:syck_compatible => true) }
