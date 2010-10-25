@@ -29,3 +29,5 @@ group :development, :test do
   gem 'capybara'
   gem 'mocha', :require => false
 end
+
+gem 'ya2yaml'
