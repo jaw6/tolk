@@ -114,11 +114,11 @@ module Tolk
       translations.updated(true).count > 0
     end
 
-    def phrases_with_translation(page = nil)
-      translations.updated(false)
+    def phrases_with_translation
+      find_phrases_with_translations
     end
 
-    def phrases_with_updated_translation(page = nil)
+    def phrases_with_updated_translation
       translations.updated(true)
     end
 
@@ -127,14 +127,11 @@ module Tolk
       Tolk::Phrase.count - existing_ids.count
     end
 
-    def phrases_without_translation(page = nil, options = {})
+    def phrases_without_translation(options = {})
       phrases = Tolk::Phrase.scoped(:order => 'tolk_phrases.key ASC')
       existing_ids = self.translations.all(:select => 'tolk_translations.phrase_id').map(&:phrase_id).uniq
       phrases = phrases.scoped(:conditions => ['tolk_phrases.id NOT IN (?)', existing_ids]) if existing_ids.present?
-      result = phrases.all(options)
-      
-      Tolk::Phrase.send :preload_associations, result, :translations
-      result
+      phrases
     end
 
     def search_phrases(query, scope, page = nil, options = {})
@@ -203,6 +200,10 @@ module Tolk
     end
 
     private
+
+    def find_phrases_with_translations(conditions = {})
+      Tolk::Phrase.scoped(:conditions => { :'tolk_translations.locale_id' => self.id }.merge(conditions), :joins => :translations, :order => 'tolk_phrases.key ASC')
+    end
 
     def remove_invalid_translations_from_target
       self.translations.proxy_target.each do |t|

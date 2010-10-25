@@ -10,7 +10,7 @@ module Tolk
     scope :page, lambda { |page|
       {
         :limit => self.per_page, 
-        :offset => (page ? (page.to_i - 1) * per_page : 0)
+        :offset => (page ? (page.to_i - 1) * self.per_page : 0)
       }
     }
 
