@@ -31,3 +31,4 @@ group :development, :test do
 end
 
 gem 'will_paginate', '~> 3.0.beta'
+gem 'ya2yaml'
