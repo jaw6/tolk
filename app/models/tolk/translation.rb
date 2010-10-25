@@ -5,6 +5,10 @@ module Tolk
     scope :containing_text, lambda { |query|
       { :conditions => ["tolk_translations.text LIKE ?", "%#{query}%"] }
     }
+    
+    scope :updated, lambda { |updated|
+      {:conditions => {:'tolk_translations.primary_updated' => updated}}
+    }
 
     serialize :text
     validates_presence_of :text, :if => proc {|r| r.primary.blank? && !r.explicit_nil }

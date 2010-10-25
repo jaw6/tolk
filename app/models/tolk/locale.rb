@@ -111,15 +111,15 @@ module Tolk
     end
 
     def has_updated_translations?
-      translations.count(:conditions => {:'tolk_translations.primary_updated' => true}) > 0
+      translations.updated(true).count > 0
     end
 
     def phrases_with_translation(page = nil)
-      find_phrases_with_translations(page, :'tolk_translations.primary_updated' => false)
+      translations.updated(false)
     end
 
     def phrases_with_updated_translation(page = nil)
-      find_phrases_with_translations(page, :'tolk_translations.primary_updated' => true)
+      translations.updated(true)
     end
 
     def count_phrases_without_translation
@@ -216,21 +216,7 @@ module Tolk
 
       true
     end
-
-    def find_phrases_with_translations(page, conditions = {})
-      result = Tolk::Phrase.paginate(:page => page,
-        :conditions => { :'tolk_translations.locale_id' => self.id }.merge(conditions),
-        :joins => :translations, :order => 'tolk_phrases.key ASC')
-
-      Tolk::Phrase.send :preload_associations, result, :translations
-
-      result.each do |phrase|
-        phrase.translation = phrase.translations.for(self)
-      end
-
-      result
-    end
-
+    
     def unsquish(string, value)
       if string.is_a?(String)
         unsquish(string.split("."), value)

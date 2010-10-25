@@ -43,5 +43,17 @@ module Tolk
     def find_locale
       @locale = Tolk::Locale.find_by_name!(params[:id])
     end
+    
+    def paginate_phrases(scoped_phrases, current_page, options={})
+      total = scoped_phrases.size
+      phrases = scoped_phrases.page(current_page).all
+      result_pages = ::ActionController::Pagination::Paginator.new(self, total, 30, current_page)
+      
+      Tolk::Phrase.send :preload_associations, phrases, :translations
+      {
+        :results => phrases,
+        :result_pages => result_pages
+      }
+    end
   end
 end
