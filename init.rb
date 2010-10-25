@@ -8,6 +8,14 @@ rescue NameError
   require File.join(classic_pagination, 'init')
 end
 
+tolk_lib = File.join(File.dirname(__FILE__), 'vendor/plugins/tolk_lib')
+$: << File.join(tolk_lib, 'lib')
+require File.join(tolk_lib, 'init')
+
+dynamic_form = File.join(File.dirname(__FILE__), 'vendor/plugins/dynamic_form')
+$: << File.join(dynamic_form, 'lib')
+require File.join(dynamic_form, 'init')
+
 $KCODE = 'UTF8'
 begin
   require 'ya2yaml'

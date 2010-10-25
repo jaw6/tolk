@@ -1,4 +1,4 @@
-Tolk::Application.routes.draw do
+Rails.application.routes.draw do
   scope 'tolk', :as => "tolk" do
     resources :locales, :controller => 'Tolk::Locales' do
       member do
