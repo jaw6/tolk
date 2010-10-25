@@ -52,7 +52,8 @@ module Tolk
     def paginate_phrases(scoped_phrases, current_page, options={})
       total = scoped_phrases.size
       phrases = scoped_phrases.page(current_page).all
-      phrases.each { |phrase| phrase.translation = phrase.translations.for(@locale) }
+      translations_for_phrases = Tolk::Translation.where({:locale_id => @locale.id, :phrase_id => phrases.collect(&:id)}).all
+      phrases.each { |phrase| phrase.translation = translations_for_phrases.detect { |t| t.phrase_id == phrase.id } }
       result_pages = ::ActionController::Pagination::Paginator.new(self, total, Tolk::Phrase.per_page, current_page)
       
       Tolk::Phrase.send :preload_associations, phrases, :translations
