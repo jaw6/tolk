@@ -29,5 +29,3 @@ group :development, :test do
   gem 'capybara'
   gem 'mocha', :require => false
 end
-
-gem 'will_paginate', '~> 3.0.beta'

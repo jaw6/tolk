@@ -1,9 +1,12 @@
 Mime::Type.register_alias "text/yaml", :yml
 
-will_paginate = File.join(File.dirname(__FILE__), 'vendor/plugins/will_paginate')
-$: << File.join(will_paginate, 'lib')
-
-require File.join(will_paginate, 'init')
+begin  
+  ActionController::Pagination
+rescue NameError
+  classic_pagination = File.join(File.dirname(__FILE__), 'vendor/plugins/classic_pagination')
+  $: << File.join(classic_pagination, 'lib')
+  require File.join(classic_pagination, 'init')
+end
 
 $KCODE = 'UTF8'
 begin
