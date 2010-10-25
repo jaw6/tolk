@@ -110,9 +110,9 @@ module Tolk
     def check_matching_variables
       unless variables_match?
         if primary_translation.variables.empty?
-          self.errors.add(:text, "The original does not contain variables, so they should not be included.")
+          self.errors[:text] << "The original does not contain variables, so they should not be included."
         else
-          self.errors.add(:text, "The translation should contain the variables #{primary_translation.to_a.to_sentence}.")
+          self.errors[:text] << "The translation should contain the variables #{[*primary_translation].to_sentence}."
         end
       end
     end

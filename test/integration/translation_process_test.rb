@@ -24,7 +24,7 @@ class TranslationProcessTest < ActionController::IntegrationTest
 
     # Updating the translation added above
     click_link 'See completed translations'
-    assert_contain "Dead men don't bite"
+    has_content? "Dead men don't bite"
 
     fill_in 'translations[][text]', :with => "Arrrr!"
     click_button 'Save changes'

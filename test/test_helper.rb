@@ -3,7 +3,10 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 
 
+require 'test/unit'
+require 'mocha'
 require "capybara/rails"
+
 
 module ActionController
   class IntegrationTest
@@ -32,3 +35,4 @@ end
 #   fixtures :all
 # 
 # end
+
